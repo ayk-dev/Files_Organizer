@@ -2,7 +2,7 @@ import os
 from datetime import date
 
 
-months = {
+months_full = {
         1: 'January',
         2: 'February',
         3: 'March',
@@ -16,20 +16,34 @@ months = {
         11: 'November',
         12: 'December'
     }
+months_short = {
+        1: 'Jan',
+        2: 'Feb',
+        3: 'Mar',
+        4: 'Apr',
+        5: 'May',
+        6: 'Jun',
+        7: 'Jul',
+        8: 'Aug',
+        9: 'Sep',
+        10: 'Oct',
+        11: 'Nov',
+        12: 'Dec'
+    }
 month = date.today().month
 # TODO add -1 to month when project is finished
 year = date.today().year
 
 
 def get_dir_path():
-    dir_name = f'{months[month]} {year}'
+    dir_name = f'{months_full[month]} {year}'
     absolute_path = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
     dir_path = os.path.join(absolute_path, 'Documents', 'Rate cons', f'{year}', dir_name)
     return dir_path
 
 
 def get_file_path():
-    file_name = f'{months[month]}_{year}.txt'
+    file_name = f'{months_short[month]}_{year}.txt'
     directory_path = get_dir_path()
     file_path = os.path.join(directory_path, file_name)
     return file_path
@@ -44,6 +58,13 @@ def create_content_file(file_path):
         file.write('pass')
 
 
+def list_pdf_files(fs, path):
+    with open(path, 'w') as file:
+        for name in fs:
+            args = name.rstrip('.pdf').split('-')
+            file.write(' '.join(args) + '\n')
+
+
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     directory = get_dir_path()
@@ -52,6 +73,17 @@ if __name__ == '__main__':
     file_path = get_file_path()
     create_content_file(file_path)
     # os.remove(file_path)
+
+    desktop = os.path.join(os.path.join(os.environ['USERPROFILE']), 'Desktop')
+    files = [f for f in os.listdir(desktop) if f.startswith(months_short[month])]
+    list_pdf_files(files, file_path)
+
+#TODO how to move all files to the new directory
+
+
+
+
+
 
 
 
