@@ -53,13 +53,13 @@ def create_directory(dir_path):
 
 
 def create_content_file(file_path):
-    with open(file_path, 'w') as file:
-        file.write('pass')
+    content_file = open(file_path, 'w')
+    content_file.close()
 
 
 def list_pdf_files(fs, path):
     with open(path, 'w') as file:
-        for name in fs:
+        for name in sorted(fs):
             args = name.rstrip('.pdf').split('-')
             file.write(' '.join(args) + '\n')
 
@@ -77,7 +77,6 @@ if __name__ == '__main__':
         create_directory(directory)
         txt_file_path = get_file_path()
         create_content_file(txt_file_path)
-        # os.remove(file_path)
 
         desktop = os.path.join(os.path.join(os.environ['USERPROFILE']), 'Desktop')
         files = [f for f in os.listdir(desktop) if f.startswith(months_short[month])]
@@ -90,12 +89,6 @@ if __name__ == '__main__':
         print(f'Program is supposed to run only once per month and has already been executed,'
               f' please check for folder {months_short[month]} {year} ')
 
-
-
-
-
-
-#TODO sort the names in the .txt file by date
 
 
 
