@@ -30,8 +30,7 @@ months_short = {
         11: 'Nov',
         12: 'Dec'
     }
-month = date.today().month
-# TODO add -1 to month when project is finished
+month = date.today().month - 1
 year = date.today().year
 
 
