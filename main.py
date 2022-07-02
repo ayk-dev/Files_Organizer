@@ -1,4 +1,4 @@
-import os
+import os, shutil
 from datetime import date
 
 
@@ -64,20 +64,38 @@ def list_pdf_files(fs, path):
             file.write(' '.join(args) + '\n')
 
 
+def move_files_to_new_dir(src, dest):
+    destination = shutil.move(src, dest)
+    return destination
+
+
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     directory = get_dir_path()
-    create_directory(directory)
 
-    file_path = get_file_path()
-    create_content_file(file_path)
-    # os.remove(file_path)
+    try:
+        create_directory(directory)
+        txt_file_path = get_file_path()
+        create_content_file(txt_file_path)
+        # os.remove(file_path)
 
-    desktop = os.path.join(os.path.join(os.environ['USERPROFILE']), 'Desktop')
-    files = [f for f in os.listdir(desktop) if f.startswith(months_short[month])]
-    list_pdf_files(files, file_path)
+        desktop = os.path.join(os.path.join(os.environ['USERPROFILE']), 'Desktop')
+        files = [f for f in os.listdir(desktop) if f.startswith(months_short[month])]
 
-#TODO how to move all files to the new directory
+        list_pdf_files(files, txt_file_path)
+        for file in files:
+            shutil.move(os.path.join(desktop, file), os.path.join(directory, file))
+
+    except FileExistsError:
+        print(f'Program is supposed to run only once per month and has already been executed,'
+              f' please check for folder {months_short[month]} {year} ')
+
+
+
+
+
+
+#TODO sort the names in the .txt file by date
 
 
 
